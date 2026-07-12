@@ -1,19 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import DashboardPage from "./pages/Dashboard";
-import { currentUser } from "./mockData/DashboardData";
+import Login from "./pages/Login";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-surface">
-        <Navbar
-          userName={currentUser.name}
-          pnr={currentUser.pnr}
-          onSignOut={() => console.log("sign out")}
-        />
         <Routes>
-          <Route path="/" element={<DashboardPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Routes>
       </div>
     </BrowserRouter>

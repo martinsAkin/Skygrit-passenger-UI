@@ -8,11 +8,15 @@ import ActiveRequestsTable from "../components/DashboardActiveRequests";
 import LoadingState from "../components/Atoms/LoadingState";
 import { api } from "../lib/api";
 import type { ActiveRequest, Booking } from "../types/dashboardTypes";
+import { currentUser } from "../mockData/DashboardData";
+import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardPage() {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [requests, setRequests] = useState<ActiveRequest[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     Promise.all([api.getBooking(), api.getActiveRequests()]).then(
@@ -42,6 +46,11 @@ export default function DashboardPage() {
 
   return (
     <PageContainer>
+      <Navbar
+          userName={currentUser.name}
+          pnr={currentUser.pnr}
+          onSignOut={() => navigate("/login")}
+        />
       <div className="space-y-6">
         {isCancelled && booking.cancellationReason && (
           <StatusBanner title="Booking Status: Flight Cancelled" message={booking.cancellationReason} />
