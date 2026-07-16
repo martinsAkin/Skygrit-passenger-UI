@@ -6,7 +6,7 @@ interface BackLinkProps {
   label?: string;
 }
 
-export default function BackLink({ to = "/", label = "Back to Dashboard" }: BackLinkProps) {
+export default function BackLink({ to = "/dashboard", label = "Back to Dashboard" }: BackLinkProps) {
   return (
     <Link
       to={to}

@@ -3,14 +3,16 @@ import { AlertTriangle } from "lucide-react";
 interface StatusBannerProps {
   title: string;
   message: string;
-  tone?: "error" | "warning";
+  tone?: "error" | "warning" | "info";
 }
 
 export default function StatusBanner({ title, message, tone = "error" }: StatusBannerProps) {
   const styles =
     tone === "error"
       ? "bg-red-50 border-red-100 text-red-700"
-      : "bg-amber-50 border-amber-100 text-amber-800";
+      : tone === "warning"
+      ? "bg-amber-50 border-amber-100 text-amber-800"
+      : "bg-blue-50 border-blue-100 text-blue-800";
 
   return (
     <div className={`flex gap-3 rounded-xl border p-4 sm:p-5 ${styles}`} role="alert">
