@@ -22,6 +22,7 @@ export interface Airport {
   code: string;
   city: string;
   country: string;
+  terminal?: string
 }
 
 export interface Flight {
@@ -58,6 +59,74 @@ export type RequestType =
   | "Compensation Claim";
 
 export type RequestStatus = "Pending" | "Approved" | "Rejected" | "Completed";
+
+export interface ActiveRequest {
+  id: string;
+  type: RequestType;
+  subtitle: string;
+  referenceId: string;
+  dateSubmitted: string;
+  timeSubmitted: string;
+  status: RequestStatus;
+  cancellable?: boolean;
+}
+
+export interface Hotel {
+  id: string;
+  name: string;
+  imageUrl: string;
+  distanceFromAirport: string;
+  amenities: string[];
+  closestToAirport?: boolean;
+}
+
+export interface CompensationOption {
+  id: string;
+  title: string;
+  description: string;
+  icon: "voucher" | "miles";
+}
+
+export interface Booking {
+  pnr: string;
+  passengerName: string;
+  originalFlight: Flight;
+  cancellationReason?: string;
+}
+
+export interface Airport {
+  code: string;
+  city: string;
+  country: string;
+}
+
+export interface Flight {
+  id: string;
+  flightNumber: string;
+  operatedBy?: string;
+  date: string;
+  isoDate: string;
+  departTime: string;
+  arriveTime: string;
+  from: Airport;
+  to: Airport;
+  passengers: number;
+  cabinClass: string;
+  aircraft?: string;
+  status: FlightStatus;
+  duration?: string;
+  stops?: number;
+  stopCode?: string;
+  seatsLeft?: number;
+  arrivesNextDay?: boolean;
+}
+
+export interface Passenger {
+  id: string;
+  name: string;
+  type: "Adult" | "Child" | "Infant";
+  eTicket: string;
+}
 
 export interface ActiveRequest {
   id: string;

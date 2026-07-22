@@ -145,13 +145,13 @@ export default function AlternativeFlightConfirmedPage() {
             type="button"
             onClick={handleDownload}
             disabled={downloading}
-            className="focus-ring flex flex-1 items-center justify-center gap-2 rounded-lg bg-brand-700 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-70"
+            className="focus-ring flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-70"
           >
             <Download className="h-4 w-4" aria-hidden="true" />
             {downloading ? "Preparing..." : "Download E-Ticket"}
           </button>
           <Link
-            to="/"
+            to="/dashboard"
             className="focus-ring flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
           >
             <Home className="h-4 w-4" aria-hidden="true" />
