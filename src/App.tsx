@@ -8,6 +8,14 @@ import Navbar from "./components/Navbar";
 import { RebookOptions } from "./pages/RebookFlight";
 import ReviewSelectedFlightPage from "./pages/ReviewSelectedFlight";
 import RebookingConfirmed from "./pages/RebookingConfirmed";
+import RequestRefundPage from "./pages/RequestRefundPage";
+import RefundSubmittedPage from "./pages/RefundSubmittedPage";
+import RefundStatusPage from "./pages/RefundStatusPage";
+import RequestAccommodationPage from "./pages/RequestAccommodation";
+import AccommodationConfirmedPage from "./pages/AccommodationConfirmed";
+import ClaimCompensationPage from "./pages/ClaimCompensation";
+import ReviewClaimDetailsPage from "./pages/ReviewClaimDetails";
+import ClaimSubmittedPage from "./pages/ClaimSubmitted";
 
 function App() {
   const location = useLocation();
@@ -35,6 +43,17 @@ function App() {
           <Route path="/rebook" element={<RebookOptions />} />
           <Route path="/rebook/:flightId" element={<ReviewSelectedFlightPage />} />
           <Route path="/rebook/:flightId/confirmed" element={<RebookingConfirmed />} />
+          <Route path="/refund" element={<RequestRefundPage />} />
+          <Route path="/refund/submitted" element={<RefundSubmittedPage />} />
+          <Route path="/refund/status" element={<RefundStatusPage />} />
+
+          <Route path="/accommodation" element={<RequestAccommodationPage />} />
+          <Route path="/accommodation/confirmed" element={<AccommodationConfirmedPage />} />
+
+          <Route path="/compensation" element={<ClaimCompensationPage />} />
+          <Route path="/compensation/review" element={<ReviewClaimDetailsPage />} />
+          <Route path="/compensation/submitted" element={<ClaimSubmittedPage />} />
+          <Route path="/compensation/status" element={"Compensation Status, coming soon"} />
         </Routes>
       </main>
       </div>

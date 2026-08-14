@@ -5,6 +5,9 @@ import type {
   Flight,
   Hotel,
   Passenger,
+  RefundMethodOption,
+  RefundQuote,
+  RefundStatusDetail,
 } from "../types/dashboardTypes";
 
 export const currentUser = {
@@ -16,7 +19,6 @@ export const currentUser = {
 
 export const passengers: Passenger[] = [
   { id: "p1", name: "Michael Robertson", type: "Adult", eTicket: "8392019284" },
-  { id: "p2", name: "Sarah Robertson", type: "Adult", eTicket: "2394857212" }
 ];
 
 export const originalFlight: Flight = {
@@ -66,7 +68,7 @@ export const rebookOptions: Flight[] = [
     departTime: "10:00 AM",
     arriveTime: "10:00 PM",
     from: { code: "JFK", city: "New York", country: "USA", terminal: "Terminal 4" },
-    to: { code: "LHR", city: "London", country: "UK", terminal: "Terminal 3" },
+    to: { code: "LHR", city: "London", country: "UK", terminal: "Terminal 5" },
     passengers: 1,
     cabinClass: "Economy",
     status: "on-time",
@@ -82,8 +84,8 @@ export const rebookOptions: Flight[] = [
     isoDate: "2023-11-16",
     departTime: "02:30 PM",
     arriveTime: "02:45 AM",
-    from: { code: "JFK", city: "New York", country: "USA" },
-    to: { code: "LHR", city: "London", country: "UK" },
+    from: { code: "JFK", city: "New York", country: "USA", terminal: "Terminal 4" },
+    to: { code: "LHR", city: "London", country: "UK", terminal: "Terminal 3" },
     passengers: 1,
     cabinClass: "Economy",
     status: "on-time",
@@ -99,8 +101,8 @@ export const rebookOptions: Flight[] = [
     isoDate: "2023-11-16",
     departTime: "08:00 AM",
     arriveTime: "11:30 PM",
-    from: { code: "JFK", city: "New York", country: "USA" },
-    to: { code: "LHR", city: "London", country: "UK" },
+    from: { code: "JFK", city: "New York", country: "USA", terminal: "Terminal 4" },
+    to: { code: "LHR", city: "London", country: "UK", terminal: "Terminal 2" },
     passengers: 1,
     cabinClass: "Economy",
     status: "on-time",
@@ -119,6 +121,7 @@ export const hotels: Hotel[] = [
     distanceFromAirport: "1.2 miles from JFK",
     amenities: ["Free Wi-Fi", "24/7 Shuttle", "Breakfast"],
     closestToAirport: true,
+    address: "144-02 135th Ave, Jamaica, NY 11436",
   },
   {
     id: "h2",
@@ -127,6 +130,7 @@ export const hotels: Hotel[] = [
       "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
     distanceFromAirport: "2.5 miles from JFK",
     amenities: ["Free Wi-Fi", "24/7 Shuttle", "Pool"],
+    address: "135-30 140th St, Jamaica, NY 11436",
   },
   {
     id: "h3",
@@ -135,6 +139,7 @@ export const hotels: Hotel[] = [
       "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
     distanceFromAirport: "3.0 miles from JFK",
     amenities: ["Free Wi-Fi", "Hourly Shuttle", "Breakfast"],
+    address: "144-15 Rockaway Blvd, Jamaica, NY 11436",
   },
 ];
 
@@ -170,3 +175,67 @@ export const activeRequests: ActiveRequest[] = [
 
 export const refundAmount = 450.0;
 export const refundVoucherAmount = 495.0;
+
+export const refundQuote: RefundQuote = {
+  originalAmount: refundAmount,
+  voucherAmount: refundVoucherAmount,
+  cardLast4: "4242",
+};
+
+export const refundMethodOptions: RefundMethodOption[] = [
+  {
+    id: "original",
+    title: "Original Payment Method",
+    description:
+      "Receive a full refund to your Visa ending in 4242. Processing typically takes 5-7 business days depending on your bank.",
+    amount: refundAmount,
+  },
+  {
+    id: "voucher",
+    title: "Skygrit Travel Voucher",
+    description:
+      "Receive travel credits instantly via email. Valid for 12 months for any future Skygrit flight booking.",
+    amount: refundVoucherAmount,
+    bonusLabel: "+10% Bonus",
+  },
+];
+
+export const refundStatusDetail: RefundStatusDetail = {
+  requestId: "REF-9824XJ",
+  requestType: "Full Refund",
+  dateSubmitted: "Nov 15, 2023",
+  currentStatus: "In Review",
+  steps: [
+    { label: "Submitted", status: "done", timestamp: "Nov 15, 10:30 AM" },
+    { label: "In Review", status: "current", timestamp: "Nov 16, 09:15 AM" },
+    { label: "Approved", status: "pending" },
+    { label: "Refund Issued", status: "pending" },
+  ],
+  originalFlightLabel: "SG-402 (JFK - LHR)",
+  passengerName: "Michael Robertson",
+  refundMethodLabel: "Original Payment (Visa **4242)",
+  estimatedProcessingTime: "5-7 Business Days",
+  reason: "Flight Cancellation",
+  estimatedAmount: 650.0,
+  cancelWindowLabel: "You have 1 day, 14 hours left to cancel this request according to airline policy.",
+};
+
+export const accommodationStay = {
+  guests: 1,
+  nights: 1,
+  checkInDate: "Nov 15, 2023",
+  checkInTime: "3:00 PM",
+  checkOutDate: "Nov 16, 2023",
+  checkOutTime: "12:00 PM",
+  roomType: "Standard King Room",
+};
+
+export const payoutDetails = {
+  method: "Bank Transfer",
+  accountHolderName: currentUser.name,
+  bankName: "Chase Bank",
+  maskedAccountNumber: "**** **** **** 1234",
+  swiftCode: "CHASUS33",
+};
+
+export const compensationClaimEstimate = "7-14 business days";

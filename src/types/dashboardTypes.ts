@@ -22,7 +22,7 @@ export interface Airport {
   code: string;
   city: string;
   country: string;
-  terminal?: string
+  terminal?: string;
 }
 
 export interface Flight {
@@ -43,6 +43,7 @@ export interface Flight {
   stops?: number;
   stopCode?: string;
   seatsLeft?: number;
+  arrivesNextDay?: boolean;
 }
 
 export interface Passenger {
@@ -78,6 +79,17 @@ export interface Hotel {
   distanceFromAirport: string;
   amenities: string[];
   closestToAirport?: boolean;
+  address?: string;
+}
+
+export interface HotelBookingResult {
+  bookingReference: string;
+  hotel: Hotel;
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  roomType: string;
+  instructions: string[];
 }
 
 export interface CompensationOption {
@@ -87,6 +99,25 @@ export interface CompensationOption {
   icon: "voucher" | "miles";
 }
 
+export interface PayoutDetails {
+  method: string;
+  accountHolderName: string;
+  bankName: string;
+  maskedAccountNumber: string;
+  swiftCode: string;
+}
+ 
+export interface ClaimSelection {
+  passengerIds: string[];
+  reason: string;
+  optionId: string;
+}
+ 
+export interface CompensationSubmissionResult {
+  trackingId: string;
+  estimatedProcessingTime: string;
+}
+
 export interface Booking {
   pnr: string;
   passengerName: string;
@@ -94,70 +125,49 @@ export interface Booking {
   cancellationReason?: string;
 }
 
-export interface Airport {
-  code: string;
-  city: string;
-  country: string;
+export type RefundMethodId = "original" | "voucher";
+
+export interface RefundMethodOption {
+  id: RefundMethodId;
+  title: string;
+  description: string;
+  amount: number;
+  bonusLabel?: string;
 }
 
-export interface Flight {
-  id: string;
-  flightNumber: string;
-  operatedBy?: string;
-  date: string;
-  isoDate: string;
-  departTime: string;
-  arriveTime: string;
-  from: Airport;
-  to: Airport;
-  passengers: number;
-  cabinClass: string;
-  aircraft?: string;
-  status: FlightStatus;
-  duration?: string;
-  stops?: number;
-  stopCode?: string;
-  seatsLeft?: number;
-  arrivesNextDay?: boolean;
+export interface RefundQuote {
+  originalAmount: number;
+  voucherAmount: number;
+  cardLast4: string;
 }
 
-export interface Passenger {
-  id: string;
-  name: string;
-  type: "Adult" | "Child" | "Infant";
-  eTicket: string;
+export interface RefundSubmissionResult {
+  trackingId: string;
+  method: RefundMethodId;
+  methodLabel: string;
+  amount: number;
+  email: string;
 }
 
-export interface ActiveRequest {
-  id: string;
-  type: RequestType;
-  subtitle: string;
-  referenceId: string;
+export type RefundStepStatus = "done" | "current" | "pending";
+
+export interface RefundStatusStep {
+  label: string;
+  status: RefundStepStatus;
+  timestamp?: string;
+}
+
+export interface RefundStatusDetail {
+  requestId: string;
+  requestType: string;
   dateSubmitted: string;
-  timeSubmitted: string;
-  status: RequestStatus;
-  cancellable?: boolean;
-}
-
-export interface Hotel {
-  id: string;
-  name: string;
-  imageUrl: string;
-  distanceFromAirport: string;
-  amenities: string[];
-  closestToAirport?: boolean;
-}
-
-export interface CompensationOption {
-  id: string;
-  title: string;
-  description: string;
-  icon: "voucher" | "miles";
-}
-
-export interface Booking {
-  pnr: string;
+  currentStatus: "In Review" | "Approved" | "Refund Issued" | "Rejected";
+  steps: RefundStatusStep[];
+  originalFlightLabel: string;
   passengerName: string;
-  originalFlight: Flight;
-  cancellationReason?: string;
+  refundMethodLabel: string;
+  estimatedProcessingTime: string;
+  reason: string;
+  estimatedAmount: number;
+  cancelWindowLabel?: string;
 }

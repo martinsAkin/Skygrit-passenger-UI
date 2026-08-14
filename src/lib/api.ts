@@ -1,71 +1,98 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-    activeRequests,
-    booking,
-    compensationOptions,
-    currentUser,
-    hotels,
-    passengers,
-    proposedFlight,
-    rebookOptions,
-    refundAmount,
-    refundVoucherAmount,
-  } from "../mockData/DashboardData";
-  import type { ActiveRequest } from "../types/dashboardTypes";
-  
-  // Simulates network latency so loading states can be built/tested against this layer.
-  const delay = <T,>(value: T, ms = 350): Promise<T> =>
-    new Promise((resolve) => setTimeout(() => resolve(value), ms));
-  
-  export const api = {
-    getCurrentUser: () => delay(currentUser),
-    getBooking: () => delay(booking),
-    getProposedFlight: () => delay(proposedFlight),
-    getRebookOptions: () => delay(rebookOptions),
-    getHotels: () => delay(hotels),
-    getPassengers: () => delay(passengers),
-    getCompensationOptions: () => delay(compensationOptions),
-    getRefundQuote: () => delay({ cash: refundAmount, voucher: refundVoucherAmount }),
-    getActiveRequests: () => delay(activeRequests),
-  
-    acceptProposedFlight: (flightId: string) =>
-      delay({ success: true, flightId }, 500),
-    selectRebookFlight: (flightId: string) =>
-      delay({ success: true, flightId }, 500),
-    selectHotel: (hotelId: string) => delay({ success: true, hotelId }, 500),
-    submitRefundRequest: (_payload: {
-      reason: string;
-      method: "original" | "voucher";
-      email: string;
-      phone?: string;
-    }) =>
-      delay(
-        {
-          success: true,
-          request: {
-            id: `r-${Date.now()}`,
-            type: "Refund Request",
-            subtitle: "Full Ticket Refund",
-            referenceId: `RF-${Math.floor(Math.random() * 90000 + 10000)}X`,
-            dateSubmitted: new Date().toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            }),
-            timeSubmitted: new Date().toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
-            status: "Pending",
-            cancellable: true,
-          } satisfies ActiveRequest,
-        },
-        600
-      ),
-    submitCompensationClaim: (_payload: {
-      passengerIds: string[];
-      reason: string;
-      optionId: string;
-    }) => delay({ success: true, referenceId: `CC-${Date.now()}` }, 600),
-    cancelRequest: (requestId: string) => delay({ success: true, requestId }, 400),
-  };
+  accommodationStay,
+  activeRequests,
+  booking,
+  compensationClaimEstimate,
+  compensationOptions,
+  currentUser,
+  hotels,
+  passengers,
+  payoutDetails,
+  proposedFlight,
+  rebookOptions,
+  refundMethodOptions,
+  refundQuote,
+  refundStatusDetail,
+} from "../mockData/DashboardData";
+import type {
+  CompensationSubmissionResult,
+  HotelBookingResult,
+  RefundMethodId,
+  RefundSubmissionResult,
+} from "../types/dashboardTypes";
+
+const delay = <T,>(value: T, ms = 350): Promise<T> =>
+  new Promise((resolve) => setTimeout(() => resolve(value), ms));
+
+export const api = {
+  getCurrentUser: () => delay(currentUser),
+  getBooking: () => delay(booking),
+  getProposedFlight: () => delay(proposedFlight),
+  getRebookOptions: () => delay(rebookOptions),
+  getHotels: () => delay(hotels),
+  getPassengers: () => delay(passengers),
+  getCompensationOptions: () => delay(compensationOptions),
+  getRefundMethodOptions: () => delay(refundMethodOptions),
+  getRefundQuote: () => delay(refundQuote),
+  getRefundStatus: () => delay(refundStatusDetail),
+  getActiveRequests: () => delay(activeRequests),
+
+  acceptProposedFlight: (flightId: string) =>
+    delay({ success: true, flightId }, 500),
+  selectRebookFlight: (flightId: string) =>
+    delay({ success: true, flightId }, 500),
+  selectHotel: (hotelId: string) => {
+    const hotel = hotels.find((h) => h.id === hotelId) ?? hotels[0];
+    const result: HotelBookingResult = {
+      bookingReference: `HTL-${Math.random().toString(36).slice(2, 7).toUpperCase()}`,
+      hotel,
+      checkIn: `${accommodationStay.checkInDate} \u2022 ${accommodationStay.checkInTime}`,
+      checkOut: `${accommodationStay.checkOutDate} \u2022 ${accommodationStay.checkOutTime}`,
+      guests: accommodationStay.guests,
+      roomType: accommodationStay.roomType,
+      instructions: [
+        "A complimentary 24/7 shuttle bus is available from Terminal 4, Arrivals Level.",
+        "Please present this booking reference and a valid ID at the hotel reception.",
+        "Room charges and applicable taxes are covered by Skygrit. You may be asked to provide a credit card for incidental charges (e.g., mini-bar, room service).",
+      ],
+    };
+    return delay({ success: true, result }, 500);
+  },
+
+  submitRefundRequest: (payload: {
+    method: RefundMethodId;
+    email: string;
+    phone?: string;
+    reason: string;
+  }) => {
+    const method = refundMethodOptions.find((m) => m.id === payload.method) ?? refundMethodOptions[0];
+    const result: RefundSubmissionResult = {
+      trackingId: `REF-${Math.random().toString(36).slice(2, 7).toUpperCase()}`,
+      method: method.id,
+      methodLabel: method.title,
+      amount: method.amount,
+      email: payload.email,
+    };
+    return delay({ success: true, result }, 600);
+  },
+
+  getPayoutDetails: () => delay(payoutDetails),
+
+  submitCompensationClaim: (_payload: {
+    passengerIds: string[];
+    reason: string;
+    optionId: string;
+  }) => {
+    const result: CompensationSubmissionResult = {
+      trackingId: `CLM-${Math.floor(Math.random() * 9000 + 1000)}-${Math.random()
+        .toString(36)
+        .slice(2, 5)
+        .toUpperCase()}`,
+      estimatedProcessingTime: compensationClaimEstimate,
+    };
+    return delay({ success: true, result }, 600);
+  },
+
+  cancelRequest: (requestId: string) => delay({ success: true, requestId }, 400),
+  cancelRefundRequest: (requestId: string) => delay({ success: true, requestId }, 400),
+};
