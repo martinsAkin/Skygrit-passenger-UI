@@ -102,8 +102,8 @@ const Login = () => {
         Need help? Contact our support team
       </p>
 
-      <footer className="absolute bottom-5 right-0 left-0">
-        <div className="text-[#3D3D3D] opacity-50 text-sm text-center flex flex-col items-center gap-1">
+      <footer className="absolute -bottom-25 right-0 left-0">
+        <div className="text-[#3D3D3D] opacity-50 text-[12px] text-center flex flex-col items-center gap-1">
             <span>You acknowledge that you read, and agree to our</span>
             <ol className="flex gap-2">
                 <li>Terms of Service</li>
