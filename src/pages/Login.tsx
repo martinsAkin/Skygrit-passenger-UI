@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/arikLogo.svg"
+import DatePickerField from "../components/DatePicker/DatepickerField";
 // import { loginAdmin } from "../api/adminService";
 
 const Login = () => {
@@ -80,16 +81,13 @@ const Login = () => {
       <label htmlFor="password" className="text-[16px] text-[#303030]">
       Booking Date (Optional)
       </label>
-      <div className="relative">
-       <input
-        type="text"
+      <DatePickerField 
+        id="bookingDate"
         value={bookingDate}
-        onChange={(e) => setBookingDate(e.target.value)}
-        placeholder="Enter booking date"
-        required
-        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 pr-12 cursor-pointer"
-       />
-      </div>
+        onChange={setBookingDate}
+        placeholder="Select booking date"
+        maxDate={new Date()}
+      />
      </div>
 
       <button
