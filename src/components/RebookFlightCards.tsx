@@ -171,7 +171,7 @@ export const RebookDetails = ({ heading, selectedFlight }: RebookDetailsProps) =
           </div>
         </div>
 
-        <dl className="mt-6 grid grid-cols-2 gap-4 rounded-lg bg-slate-50 p-4 text-sm sm:grid-cols-4">
+        <dl className="mt-6 grid grid-cols-2 gap-4 rounded-lg bg-slate-50 p-4 text-sm sm:grid-cols-4 items-center">
           <div>
             <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">Flight Number</dt>
             <dd className="mt-1 flex items-center gap-1.5 font-semibold text-slate-800">
@@ -183,11 +183,11 @@ export const RebookDetails = ({ heading, selectedFlight }: RebookDetailsProps) =
             <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">Class</dt>
             <dd className="mt-1 font-semibold text-slate-800">{selectedFlight.cabinClass}</dd>
           </div>
-          <div className="col-span-2 sm:col-span-2">
+          <div className="col-span-2 sm:col-span-2 flex flex-col items-center">
             <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">Operated By</dt>
             <dd className="mt-1 flex items-center gap-1.5 font-semibold text-slate-800">
               <Building size={16} color="#0D47A1" aria-hidden="true" />
-              {selectedFlight.operatedBy ?? "Arik Air"}
+              {selectedFlight.operatedBy ?? "aero airlines"}
             </dd>
           </div>
         </dl>

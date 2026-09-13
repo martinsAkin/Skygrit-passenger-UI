@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/arikLogo.svg"
+import logo from "../assets/newLogo.svg"
 import DatePickerField from "../components/DatePicker/DatepickerField";
 // import { loginAdmin } from "../api/adminService";
 

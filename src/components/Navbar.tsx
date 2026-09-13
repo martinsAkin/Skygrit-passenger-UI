@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { LogOut, Plane, ChevronDown } from "lucide-react";
+import { LogOut, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "../assets/newLogo.svg"
 
 interface NavbarProps {
   userName: string;
@@ -91,15 +92,7 @@ export default function Navbar({ userName, pnr, onSignOut }: NavbarProps) {
 function ArikLogo() {
   return (
     <div className="flex items-center gap-2">
-      <Plane className="h-7 w-7 -rotate-45 text-brand-700" aria-hidden="true" />
-      <div className="leading-none">
-        <p className="font-serif text-xl font-bold italic tracking-tight text-brand-800">
-          Arık
-        </p>
-        <p className="-mt-0.5 text-[10px] font-medium tracking-wide text-brand-red">
-          arikair.com
-        </p>
-      </div>
+      <img src={logo} alt="logo" className="w-30 h-20 mx-auto" />
     </div>
   );
 }
