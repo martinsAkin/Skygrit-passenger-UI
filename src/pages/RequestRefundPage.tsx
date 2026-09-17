@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageContainer from "../components/PageContainer";
 import BackLink from "../components/Atoms/BackLink";
