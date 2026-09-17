@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { Info } from "lucide-react";
 import PageContainer from "../components/PageContainer";
 import BackLink from "../components/Atoms/BackLink";
 import StatusBanner from "../components/Atoms/StatusBanner";
@@ -10,14 +9,44 @@ import RadioSelectCard from "../components/RadioSelectCard";
 import { api } from "../lib/api";
 import { currentUser } from "../mockData/DashboardData";
 import type { Booking, RefundMethodId, RefundMethodOption } from "../types/dashboardTypes";
+import { Plane } from "lucide-react";
+import FileUpload from "../components/FileUpload";
 
 const REFUND_REASONS = [
-  "Flight Cancelled by Airline",
-  "Flight Delayed",
-  "Schedule Change",
-  "Personal / Medical Reasons",
-  "Other",
+  {
+    value: "",
+    label: "Select Reason for Refund"
+  },
+  {
+    value: "cancelled_airline",
+    label: "Flight Cancelled by Airline"
+  },
+  {
+    value: "flight_delayed",
+    label: "Flight Delayed"
+  },
+  {
+    value: "schedule_changed",
+    label: "Schedule Change"
+  },
+  {
+    value: "personal_medical",
+    label: "Personal / Medical Reasons"
+  },
+  {
+    value: "other",
+    label: "Other"
+  },
 ];
+
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return "0 Bytes";
+
+  const units = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+
+  return `${(bytes / Math.pow(1024, 1)).toFixed(2)} ${units[i]}`
+}
 
 export default function RequestRefundPage() {
   const navigate = useNavigate();
@@ -26,10 +55,11 @@ export default function RequestRefundPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const [reason, setReason] = useState(REFUND_REASONS[0]);
+  const [reason, setReason] = useState("");
   const [selectedMethod, setSelectedMethod] = useState<RefundMethodId>("original");
   const [email, setEmail] = useState(currentUser.email);
   const [phone, setPhone] = useState(currentUser.phone);
+  const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     Promise.all([api.getBooking(), api.getRefundMethodOptions()]).then(
@@ -111,29 +141,48 @@ export default function RequestRefundPage() {
                 className="focus-ring mt-4 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-800"
               >
                 {REFUND_REASONS.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
+                  <option key={r.value} value={r.value}>
+                    {r.label}
                   </option>
                 ))}
               </select>
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
-              <h2 className="text-base font-bold text-slate-900">Refund Options</h2>
-              <div className="mt-4 space-y-4">
-                {methods.map((method) => (
-                  <RadioSelectCard
-                    key={method.id}
-                    selected={selectedMethod === method.id}
-                    onSelect={() => setSelectedMethod(method.id)}
-                    title={method.title}
-                    description={method.description}
-                    valueLabel={`$${method.amount.toFixed(2)}`}
-                    badge={method.bonusLabel}
-                  />
-                ))}
-              </div>
-            </div>
+            {
+              reason === "" 
+              ? 
+              "" 
+              : 
+              reason === "personal_medical" ?
+                <div>
+                  <FileUpload onFileSelect={setFile}/>
+                  {
+                    file && (
+                      <div className="mt-3 text-sm text-gray-600 flex flex-col gap-1.5">
+                        <p>Selected File: {file.name}</p>
+                        <p>File Size: {formatFileSize(file.size)}</p>
+                      </div>
+                    )
+                  }
+                </div>
+              :
+                <div className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
+                  <h2 className="text-base font-bold text-slate-900">Refund Options</h2>
+                  <div className="mt-4 space-y-4">
+                    {methods.map((method) => (
+                      <RadioSelectCard
+                        key={method.id}
+                        selected={selectedMethod === method.id}
+                        onSelect={() => setSelectedMethod(method.id)}
+                        title={method.title}
+                        description={method.description}
+                        valueLabel={`$${method.amount.toFixed(2)}`}
+                        badge={method.bonusLabel}
+                      />
+                    ))}
+                  </div>
+                </div>
+              }
 
             <div className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6">
               <h2 className="text-base font-bold text-slate-900">Tracking &amp; Updates</h2>
@@ -193,7 +242,7 @@ export default function RequestRefundPage() {
 
             <div className="mt-4 flex items-center justify-between">
               <span className="text-xl font-bold text-slate-900">{flight.from.code}</span>
-              <span className="text-slate-300">&#9992;</span>
+              <Plane className="h-4 w-4 text-slate-300" aria-hidden="true" />
               <span className="text-xl font-bold text-slate-900">{flight.to.code}</span>
             </div>
             <div className="mt-1 flex items-center justify-between text-sm text-slate-500">

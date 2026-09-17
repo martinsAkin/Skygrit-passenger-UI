@@ -49,7 +49,11 @@ export default function FlightSummaryCard({
           </p>
           <p className="mt-3 text-base font-medium text-slate-700">{flight.departTime}</p>
         </div>
-        <Plane className="h-5 w-5 shrink-0 text-slate-300 sm:h-6 sm:w-6" aria-hidden="true" />
+        <div className="flex flex-1 items-center gap-2 mx-5">
+          <div className="h-px flex-1 border-t-2 border-dotted border-slate-300"/>
+          <Plane className="h-5 w-5 shrink-0 text-slate-300 sm:h-6 sm:w-6" aria-hidden="true" />
+          <div className="h-px flex-1 border-t-2 border-dotted border-slate-300"/>
+        </div>
         <div className="text-right">
           <p className="text-3xl font-bold text-slate-900 sm:text-4xl">{flight.to.code}</p>
           <p className="mt-1 text-sm text-slate-500">
