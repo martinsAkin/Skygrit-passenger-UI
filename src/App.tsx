@@ -32,7 +32,7 @@ function App() {
           shouldHideHeadbar && <Navbar
                   userName={currentUser.name}
                   pnr={currentUser.pnr}
-                  onSignOut={() => navigate("/login")}
+                  onSignOut={() => navigate("/")}
                 />
         }
         <Routes>
